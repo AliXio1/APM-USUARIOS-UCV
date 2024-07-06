@@ -15,16 +15,16 @@ export class IncidentePage implements OnInit {
   incidentPlace: string = '';
   incidentFloor: string = '';
   incidentDescription: string = '';
-  otraDescripcion: string = ''; // Añadir esta línea
+  otraDescripcion: string = '';
   descriptionEnabled: boolean = false;
   otroLugar: string = '';
-  incidentZone: string = ''; // Nuevo campo para la zona del incidente
-  floorOptions: string[] = []; // Opciones dinámicas de piso
-  descriptionOptions: string[] = []; // Opciones dinámicas de descripción
-  incidents: any[] = []; // Array para almacenar los incidentes enviados por los usuarios
+  incidentZone: string = '';
+  floorOptions: string[] = [];
+  descriptionOptions: string[] = [];
+  incidents: any[] = [];
   mostrarTextarea: boolean = false;
   incidentDescriptionDetallada: string = '';
-  photo: string | undefined; // Variable para almacenar la foto tomada
+  photo: string | undefined;
 
   constructor(
     private router: Router,
@@ -42,8 +42,8 @@ export class IncidentePage implements OnInit {
 
   enableDescriptionAndPlace() {
     this.descriptionEnabled = !!this.incidentType;
-    console.log('descriptionEnabled:', this.descriptionEnabled); // Verificación
-    this.updateDescriptionOptions(); // Actualizar opciones de descripción al cambiar tipo de incidencia
+    console.log('descriptionEnabled:', this.descriptionEnabled);
+    this.updateDescriptionOptions();
   }
 
   updateFloorOptions() {
@@ -81,8 +81,8 @@ export class IncidentePage implements OnInit {
 
   updateDescriptionOptions() {
     // Lógica para actualizar las opciones de descripción según incidentType
-    this.descriptionOptions = []; // Reiniciar opciones
-    this.mostrarTextarea = false; // Reiniciar el flag
+    this.descriptionOptions = [];
+    this.mostrarTextarea = false;
     if (this.incidentType === 'Mantenimiento') {
       this.descriptionOptions = [
         'Derrame de líquidos',
@@ -126,7 +126,7 @@ export class IncidentePage implements OnInit {
 
   async addIncident() {
     if (this.incidentType && this.incidentDescription.trim() !== '' && this.incidentPlace && this.incidentFloor) {
-      const user = this.utilsService.getFromLocalStorage('user'); // Obtener el usuario del almacenamiento local
+      const user = this.utilsService.getFromLocalStorage('user');
 
       // Determinar criticidad basada en la descripción
       const criticidad = this.detectarCriticidad(this.incidentDescription);
@@ -138,16 +138,16 @@ export class IncidentePage implements OnInit {
         floor: this.incidentFloor,
         date: this.currentDate.toISOString().split('T')[0], // yyyy-MM-dd
         timestamp: new Date().toISOString(),
-        userEmail: user?.email || '', // Añadir el email del usuario
-        criticidad: criticidad, // Asignar criticidad calculada
-        photo: this.photo // Agregar la foto al objeto incidente
+        userEmail: user?.email || '',
+        criticidad: criticidad,
+        photo: this.photo
       };
 
       try {
-        // Subir la foto a Firebase Storage antes de guardar el incidente
+        
       if (this.photo) {
         const photoUrl = await this.firebaseService.uploadPhotoToFirebase(this.photo);
-        incident.photo = photoUrl; // Asignar la URL de la foto subida al incidente
+        incident.photo = photoUrl;
       }
 
         // Guardar el incidente en Firestore
@@ -160,7 +160,7 @@ export class IncidentePage implements OnInit {
         this.incidentPlace = '';
         this.incidentFloor = '';
         this.descriptionEnabled = false;
-        this.photo = undefined; // Limpiar la foto después de enviar el incidente
+        this.photo = undefined;
 
         this.router.navigate(['perfiluser']);
 
