@@ -100,7 +100,7 @@ export class MainPage implements OnInit {
 
   async signOut() {
     try {
-      this.utilsSvc.removeItem('user');  // Use the correct method to clear local storage
+      this.utilsSvc.removeItem('user');
       this.utilsSvc.routink('/login');
     } catch (error) {
       console.error('Error during sign out:', error);
