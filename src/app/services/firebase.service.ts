@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { getFirestore, setDoc, doc, getDoc, collection, query, where, getDocs } from '@angular/fire/firestore';
-import { getStorage, ref, uploadString, getDownloadURL } from 'firebase/storage'; // Importar para Firebase Storage
+import { getStorage, ref, uploadString, getDownloadURL } from 'firebase/storage'; 
 import { UtilsService } from './utils.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
@@ -86,11 +86,11 @@ export class FirebaseService {
     const storageRef = this.getStorageReference();
     const fileName = `${new Date().getTime()}.jpg`;
 
-    const photoRef = this.getStorageChildReference(storageRef, fileName); // Referencia del archivo en Storage
-    await this.uploadStringToStorage(photoRef, dataUrl, 'data_url'); // Subir la foto como string
+    const photoRef = this.getStorageChildReference(storageRef, fileName);
+    await this.uploadStringToStorage(photoRef, dataUrl, 'data_url');
 
-    const downloadUrl = await this.getDownloadURL(photoRef); // Obtener la URL de descarga
-    return downloadUrl; // Devolver la URL de la foto subida
+    const downloadUrl = await this.getDownloadURL(photoRef);
+    return downloadUrl;
   }
 
   
@@ -125,7 +125,7 @@ export class FirebaseService {
     return querySnapshot.docs.length > 0 ? querySnapshot.docs[0].data() as Users : undefined;
   }
 
-  // ==== Actualizar un usuario ====
+  // === Actualizar un usuario ====
   async updateUser(user: Users) {
     const userRef = doc(getFirestore(), 'users', user.email);
     await setDoc(userRef, user, { merge: true });
